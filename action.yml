@@ -1,0 +1,12 @@
+name: 'Label PR'
+description: 'Adds labels to the PR based on branch name and more'
+author: 'Jarek Tkaczyk'
+inputs: 
+  repo-token:
+    description: 'The GITHUB_TOKEN secret'
+branding:
+  icon: 'user-plus'
+  color: 'green'
+runs:
+  using: 'node12'
+  main: 'lib/main.js'
