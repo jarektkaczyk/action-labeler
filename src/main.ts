@@ -13,7 +13,8 @@ async function run() {
 }
 
 async function addLabels(client: github.GitHub) {
-  console.log(github.context.payload.issue);
+  console.log(github.context.payload);
+  console.log(github.context.payload.pull_request);
   const prPayload = github.context.payload.pull_request;
   if (!prPayload) {
     throw Error("Could not get pull request number from context, exiting");
