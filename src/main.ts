@@ -13,7 +13,7 @@ async function run() {
 }
 
 async function addLabels(client: github.GitHub) {
-  console.log(github.context.payload);
+  console.log(github.context.issue);
   console.log(github.context.payload.pull_request);
   const prPayload = github.context.payload.pull_request;
   if (!prPayload) {
