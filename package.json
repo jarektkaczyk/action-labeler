@@ -1,0 +1,43 @@
+{
+  "name": "labeler",
+  "private": true,
+  "version": "1.0.0",
+  "description": "GitHub Action for labeling PRs",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jarektkaczyk/labeler.git"
+  },
+  "keywords": [
+    "actions",
+    "node",
+    "setup"
+  ],
+  "author": "Jarek Tkaczyk <jarek@softonsofa.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.0.0",
+    "@actions/github": "^1.0.0",
+    "js-yaml": "^3.13.1",
+    "semver": "^6.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.7",
+    "prettier": "^1.17.1",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.1"
+  },
+  "husky": {
+    "skipCI": true,
+    "hooks": {
+      "pre-commit": "npm run build && npm run format",
+      "post-commit": "npm prune --production && git add node_modules/* && git commit -m \"Husky commit correct node modules\""
+    }
+  }
+}
