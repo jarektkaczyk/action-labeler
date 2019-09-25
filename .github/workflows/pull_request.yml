@@ -1,0 +1,11 @@
+name: Labeler
+on: [pull_request]
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: jarektkaczyk/labeler@master
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
