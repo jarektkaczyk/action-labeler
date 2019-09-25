@@ -56,15 +56,15 @@ function parsePullRequest(pullRequest: PullRequest): string[] {
 
   const labels: string[] = [];
   if (isWip) {
-    labels.push("dnm");
+    labels.push("❌ dnm");
   } else if (isHotfix) {
-    labels.push("hotfix");
+    labels.push("💣 hotfix");
   } else if (isRelease) {
-    labels.push("release");
+    labels.push("🎁 release");
   } else if (isFeature && targetsFeature) {
-    labels.push("partial");
+    labels.push("⚙️ partial");
   } else if (isFeature) {
-    labels.push("feature");
+    labels.push("✨ feature");
   }
   return labels;
 }
