@@ -6,7 +6,7 @@ inputs:
     description: 'The GITHUB_TOKEN secret'
   labels:
     description: 'JSON object as STRING with labels mapping, eg. {"wip":"🚧 Do not merge", "hotfix":"💣 hotfix", "release":"🎁 release", "partial":"⚙️ Partial", "feature":"🎊 Feature"}'
-    default: '{}'
+    default: '{"wip": "❌ dnm", "hotfix": "💣 hotfix", "release": "🎁 release", "partial": "⚙️ partial", "feature": "✨ feature"}'
 branding:
   icon: 'user-plus'
   color: 'green'
