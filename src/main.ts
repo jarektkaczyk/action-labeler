@@ -8,15 +8,24 @@ type PullRequest = {
   number: number;
 };
 
+type LabelsMap = {
+  wip?: string;
+  hotfix?: string;
+  feature?: string;
+  partial?: string;
+  release?: string;
+};
+
 async function run() {
   try {
     const token = core.getInput("repo-token", { required: true });
+    const labelsMap = JSON.parse(core.getInput("labels", { required: true }));
     const prNumber = getPrNumber();
     if (!prNumber) {
       throw Error("PR number missing, died");
     }
 
-    await addLabels(new github.GitHub(token), prNumber);
+    await addLabels(new github.GitHub(token), prNumber, labelsMap);
   } catch (error) {
     core.error(error);
     core.setFailed(error.message);
@@ -32,9 +41,9 @@ function getPrNumber(): number | undefined {
   return pullRequest.number;
 }
 
-async function addLabels(client: github.GitHub, prNumber: number) {
+async function addLabels(client: github.GitHub, prNumber: number, labelsMap: object) {
   const pullRequest = await getPullRequest(client, prNumber);
-  const labels = parsePullRequest(pullRequest);
+  const labels = parsePullRequest(pullRequest, labelsMap);
 
   if (labels.length > 0) {
     await client.issues.addLabels({
@@ -47,7 +56,16 @@ async function addLabels(client: github.GitHub, prNumber: number) {
   }
 }
 
-function parsePullRequest(pullRequest: PullRequest): string[] {
+function parsePullRequest(
+  pullRequest: PullRequest,
+  {
+    wip = '',
+    hotfix = '',
+    feature = '',
+    partial = '',
+    release = ''
+  }: LabelsMap
+): string[] {
   const isWip = pullRequest.title.match(/\bwip\b/i);
   const isHotfix = pullRequest.headRefName.match(/^hotfix/);
   const isFeature = pullRequest.headRefName.match(/^feature/);
@@ -56,17 +74,17 @@ function parsePullRequest(pullRequest: PullRequest): string[] {
 
   const labels: string[] = [];
   if (isWip) {
-    labels.push("❌ dnm");
+    labels.push(wip);
   } else if (isHotfix) {
-    labels.push("💣 hotfix");
+    labels.push(hotfix);
   } else if (isRelease) {
-    labels.push("🎁 release");
+    labels.push(release);
   } else if (isFeature && targetsFeature) {
-    labels.push("⚙️ partial");
+    labels.push(partial);
   } else if (isFeature) {
-    labels.push("✨ feature");
+    labels.push(feature);
   }
-  return labels;
+  return labels.filter(l => l !== '');
 }
 
 async function getPullRequest(
