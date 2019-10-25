@@ -19,7 +19,7 @@ type LabelsMap = {
 async function run() {
   try {
     const token = core.getInput("repo-token", { required: true });
-    const labelsMap = core.getInput("labels", { required: true });
+    const labelsMap = JSON.parse(core.getInput("labels", { required: true }));
     const prNumber = getPrNumber();
     if (!prNumber) {
       throw Error("PR number missing, died");
